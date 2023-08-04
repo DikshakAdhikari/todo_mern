@@ -1,6 +1,7 @@
 const express = require('express');
 const { Todo } = require('../models/todos');
 const verifyJwt = require('../middleware/verifyJwt');
+const { User } = require('../models/user');
 const router= express.Router();
 
 router.post('/todo', verifyJwt, async (req,res)=> {
@@ -19,8 +20,14 @@ router.post('/todo', verifyJwt, async (req,res)=> {
 
 router.get('/todo', verifyJwt, async(req,res)=> {
     try{
-        const todos= await Todo.find({});
-        res.json({todos});
+         const todos= await Todo.find({});
+        //console.log(todos);
+        const userId= req.id.id;
+       // console.log(userId);
+        const userTodos =  todos.filter((t)=> t.userId === userId)
+        //console.log(userTodos);
+        res.json({userTodos});
+        
 
     }catch(err){
         res.json(err);

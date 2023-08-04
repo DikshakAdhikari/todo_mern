@@ -51,8 +51,8 @@ const DisplayTodo = ({user})=> {
   useEffect(()=> {
     const fun= async()=> {
      const res= await axios.get("http://localhost:3000/todos/todo", {headers: {Authorization:`Bearer ${localStorage.getItem('token')}`}});
-     setTodos(res.data.todos);
-     console.log(res.data.todos);
+     //console.log(res.data);
+     setTodos(res.data.userTodos);
     }
     
     fun();
