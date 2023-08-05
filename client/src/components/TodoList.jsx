@@ -6,6 +6,8 @@ import { authState } from "../store/atom/authState";
 
 export const TodoList = () => {
   const [todos, setTodos] = useState([]);
+  const usernames = useRecoilValue(authState);
+  const navigate= useNavigate();
   useEffect(() => {
     const fun = async () => {
       const res = await axios.get("http://localhost:3000/todos/todo", {
@@ -18,11 +20,30 @@ export const TodoList = () => {
     fun();
   }, []);
 
+  const markDone = async (id) => {
+    const response = await fetch(`http://localhost:3000/todos/${id}/done`, {
+        method: 'PATCH',
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    });
+    const updatedTodo = await response.json();
+    setTodos(todos.map((todo) => (todo._id === updatedTodo._id ? updatedTodo : todo)));
+    
+
+  }
+
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   return (
     <div>
-      <div style={{ display: "flex", marginLeft: 200, marginTop: 200, gap: 1 }}>
+      <div style={{display:"flex", gap:20}}>
+    <h1 style={{display:"flex", gap:10}}>Welcome <div style={{color:"blue", cursor:"pointer"}}>{usernames.username}</div> </h1>
+    <button style={{height:"4vh", position:"relative", top:23}}  onClick={()=>{
+       localStorage.removeItem("token");
+       window.location = "/login";
+    }}>logout</button>
+
+      </div>
+      <div style={{ display: "flex", marginLeft: 200, marginTop: 50, gap: 1 }}>
         <div>
           <input
             type="text"
@@ -73,7 +94,7 @@ export const TodoList = () => {
             <div key={todo._id}>
               <h2 style={{ marginBottom: 10 }}>{todo.title}</h2>
               <div style={{ marginBottom: 10 }}>{todo.description}</div>
-              <button>Mark as Read!</button>
+              <button onClick={()=>markDone(todo._id)}> {todo.done=== true ? "Done" : "Mark as done"  }  </button>
               <br />
               <br />
               <br />

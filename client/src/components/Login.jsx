@@ -22,11 +22,14 @@ export const Login = () => {
       <button onClick={async()=> {
         try{
           const user= await axios.post('http://localhost:3000/user/login', {username: email, password: password});
-          //console.log(user);
+          console.log(user);
           localStorage.setItem('token',user.data.token);
-          alert('User Logged in successfully');
-          navigate('/todos')
-        }catch(err){
+      
+            alert('User Logged in successfully');
+            window.location='/todos'
+       
+          
+        }catch(err){ 
           console.log(err);
         }
 

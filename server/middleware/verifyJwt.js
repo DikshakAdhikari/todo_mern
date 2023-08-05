@@ -5,7 +5,9 @@ const verifyJwt= async (req,res,next)=> {
 
     try{
         const data= req.headers.authorization;
-        const token= data.split(" ")[1];
+      //  console.log(data);
+        if(data){
+            const token= data.split(" ")[1];
          //console.log(token);
         jwt.verify(token,process.env.SECRET_KEY , (err, id)=> {
             if(err){
@@ -14,6 +16,10 @@ const verifyJwt= async (req,res,next)=> {
             req.id= id;
             next();
         })
+        }else{
+            res.sendStatus(401);
+        }
+        
     }catch(err){
       
         console.log(err);

@@ -36,7 +36,7 @@ const Init = ()=> {
       const res= await axios.get('http://localhost:3000/user/me',{headers: {"Authorization":`Bearer ${localStorage.getItem('token')}`}});
 
       setRecoilUsername({
-        token:null,
+        token:res.token,
         username:res.data
       })
     
