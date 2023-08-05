@@ -11,8 +11,9 @@ router.post('/todo', verifyJwt, async (req,res)=> {
         const userId= req.id.id;
         const obj= {title, description,done,userId};
         const todos = new Todo(obj);
-        await todos.save();
-        res.json(todos);
+        const newTodo= await todos.save();
+       // console.log(newTodo);
+        res.json(newTodo);
     }catch(err){
         res.status(403).json(err)
     }
@@ -47,7 +48,9 @@ router.patch('/:courseId/done', verifyJwt, async (req,res)=> {
     }catch(err){
         res.status(403).json(err)
     }
-})
+});
+
+
 
 
 module.exports= router

@@ -47,7 +47,7 @@ router.get('/me', verifyJwt, async (req,res)=> {
         res.json(username);
 
     }catch(err){
-        console.log("puppu");
+        //console.log("puppu");
         console.log(err);
     }
 })
