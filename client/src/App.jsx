@@ -1,5 +1,5 @@
 import './App.css'
-import  {BrowserRouter  as Router, Routes, Route} from 'react-router-dom'
+import  {BrowserRouter  as Router, Routes, Route, useNavigate} from 'react-router-dom'
 import { Login } from './components/Login'
 import { Signup } from './components/Signup'
 import { TodoList } from './components/TodoList'
@@ -30,19 +30,32 @@ function App() {
 }
 
 const Init = ()=> {
+  const navigate= useNavigate();
   const setRecoilUsername= useSetRecoilState(authState)
   useEffect(()=> {
+    //const token = localStorage.getItem("token");
     const fun = async()=> {
-      const res= await axios.get('http://localhost:3000/user/me',{headers: {"Authorization":`Bearer ${localStorage.getItem('token')}`}});
+      try{
+        const res= await axios.get('http://localhost:3000/user/me',{headers: {"Authorization":`Bearer ${localStorage.getItem('token')}`}});
+     // console.log(res.data);
 
-      setRecoilUsername({
-        token:res.token,
-        username:res.data
-      })
-    
+      if(res.data){
+        setRecoilUsername({
+          token:res.token,
+          username:res.data
+        })   
+        navigate('/todos');
+      }else{
+        navigate('/login')
+      }
+      } catch(err){
+        navigate('/login')
+      }
+      
+      
     }
     fun();
-  })
+  },[])
 }
 
 export default App
