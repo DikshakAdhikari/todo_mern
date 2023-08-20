@@ -30,7 +30,7 @@ function App() {
 }
 
 const Init = ()=> {
-  const navigate= useNavigate();
+  const navigate= useNavigate(); //best
   const setRecoilUsername= useSetRecoilState(authState)
   useEffect(()=> {
     //const token = localStorage.getItem("token");
